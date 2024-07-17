@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake Game</title>
+    <title>Snake Spiel</title>
     <style>
         body {
             display: flex;
@@ -38,14 +38,24 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
+        #characterSelect {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
     <div id="gameContainer">
         <div id="instructions">
-            controlls:<br>
-            W, A, S, D<br>
-            Arrow keys
+            Steuerung:<br>
+            WASD oder<br>
+            Pfeiltasten
+            <div id="characterSelect">
+                <label for="character">Charakter:</label>
+                <select id="character" onchange="changeCharacter()">
+                    <option value="snake">Schlange</option>
+                    <option value="banana">Banane</option>
+                </select>
+            </div>
         </div>
         <canvas id="gameCanvas" width="400" height="400"></canvas>
         <div id="scoreContainer">Punkte: <span id="score">0</span></div>
@@ -68,12 +78,26 @@
         let lastTime = 0;
         const moveInterval = 100; // Schlange bewegt sich alle 100ms
 
-        const snakeBody = '🟩';
-        const snakeHead = '🐸';
-        const foodEmoji = '🍎';
+        let snakeHead = '🐸';
+        let snakeBody = '🟩';
+        let foodEmoji = '🍎';
         
         document.addEventListener('keydown', changeDirection);
         
+        function changeCharacter() {
+            const character = document.getElementById('character').value;
+            if (character === 'snake') {
+                snakeHead = '🐸';
+                snakeBody = '🟩';
+                foodEmoji = '🍎';
+                
+            } else if (character === 'banana') {
+                snakeHead = '🍆';
+                snakeBody = '🟪';
+                foodEmoji = '🍑';
+            }
+        }
+
         function changeDirection(event) {
             const key = event.key.toLowerCase();
             
