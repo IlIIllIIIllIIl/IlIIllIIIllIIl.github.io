@@ -53,7 +53,7 @@
                 <label for="character">Charakter:</label>
                 <select id="character" onchange="changeCharacter()">
                     <option value="snake">Schlange</option>
-                    <option value="banana">Banane</option>
+                    <option value="banana">Penis</option>
                 </select>
             </div>
         </div>
@@ -80,7 +80,7 @@
 
         let snakeHead = '🐸';
         let snakeBody = '🟩';
-        let foodEmoji = '🍎';
+        const foodEmoji = '🍎';
         
         document.addEventListener('keydown', changeDirection);
         
@@ -89,12 +89,9 @@
             if (character === 'snake') {
                 snakeHead = '🐸';
                 snakeBody = '🟩';
-                foodEmoji = '🍎';
-                
             } else if (character === 'banana') {
                 snakeHead = '🍆';
                 snakeBody = '🟪';
-                foodEmoji = '🍑';
             }
         }
 
@@ -199,12 +196,14 @@
             dy = 0;
             score = 0;
             updateScore();
+            changeCharacter(); // Rufe changeCharacter auf, um den ausgewählten Skin beizubehalten
         }
         
         function updateScore() {
             scoreElement.textContent = score;
         }
         
+        changeCharacter(); // Initialisiere den Charakter beim Laden der Seite
         requestAnimationFrame(gameLoop);
     </script>
 </body>
