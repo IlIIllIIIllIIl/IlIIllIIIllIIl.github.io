@@ -1,6 +1,7 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreElement = document.getElementById('score');
+const highScoreElement = document.getElementById('highScore');
 const gridSize = 20;
 const tileCount = canvas.width / gridSize;
 let snake = [{x: 10, y: 10}];
@@ -8,6 +9,7 @@ let food = {x: 15, y: 15};
 let dx = 0;
 let dy = 0;
 let score = 0;
+let highScore = 0;
 let lastTime = 0;
 const moveInterval = 100; // Schlange bewegt sich alle 100ms
 let snakeHead = '🐸';
@@ -106,8 +108,19 @@ function drawFood() {
 }
 
 function generateFood() {
-    food.x = Math.floor(Math.random() * tileCount);
-    food.y = Math.floor(Math.random() * tileCount);
+    let newFood;
+    do {
+        newFood = {
+            x: Math.floor(Math.random() * tileCount),
+            y: Math.floor(Math.random() * tileCount)
+        };
+    } while (isFoodOnSnake(newFood));
+    
+    food = newFood;
+}
+
+function isFoodOnSnake(pos) {
+    return snake.some(segment => segment.x === pos.x && segment.y === pos.y);
 }
 
 function checkCollision() {
@@ -133,6 +146,44 @@ function resetGame() {
 
 function updateScore() {
     scoreElement.textContent = score;
+    
+    // Überprüfen und Aktualisieren des Highscores
+    let savedHighScore = getCookie('snakeHighScore');
+    if (savedHighScore !== null) {
+        highScore = parseInt(savedHighScore);
+    }
+    
+    if (score > highScore) {
+        highScore = score;
+        setCookie('snakeHighScore', highScore, 30); // Speichert für 30 Tage
+    }
+    
+    // Zeige den Highscore an
+    highScoreElement.textContent = highScore;
+}
+
+function setCookie(name, value, days) {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+    document.cookie = name + '=' + value + ';expires=' + expires.toUTCString() + ';path=/';
+}
+
+function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
+// Initialize high score from cookie
+let savedHighScore = getCookie('snakeHighScore');
+if (savedHighScore !== null) {
+    highScore = parseInt(savedHighScore);
+    highScoreElement.textContent = highScore;
 }
 
 changeCharacter(); // Initialisiere den Charakter beim Laden der Seite
