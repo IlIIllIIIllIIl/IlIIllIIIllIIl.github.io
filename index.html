@@ -54,6 +54,7 @@
                 <select id="character" onchange="changeCharacter()">
                     <option value="snake">snake</option>
                     <option value="banana">penis</option>
+                    <option value="cop">cop</option>
                 </select>
             </div>
         </div>
@@ -80,7 +81,7 @@
 
         let snakeHead = '🐸';
         let snakeBody = '🟩';
-        const foodEmoji = '🍎';
+        let foodEmoji = '🍎';
         
         document.addEventListener('keydown', changeDirection);
         
@@ -89,9 +90,15 @@
             if (character === 'snake') {
                 snakeHead = '🐸';
                 snakeBody = '🟩';
+                foodEmoji = '🍎';
             } else if (character === 'banana') {
                 snakeHead = '🍆';
                 snakeBody = '🟪';
+                foodEmoji = '💦';
+            } else if (character === "cop") {
+                snakeHead = "👮🏻";
+                snakeBody = "🟦";
+                foodEmoji = "🧔🏾";
             }
         }
 
